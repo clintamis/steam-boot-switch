@@ -37,7 +37,7 @@ For reliable testing, leave a wired controller connected *before* restarting Win
 3. Choose your preferences and click **Install / Upgrade**.
 4. On the next Windows sign-in, leave a controller connected to test automatic Big Picture launch. After installation the watcher starts immediately in **monitor-only mode**; it won't open Big Picture just because you installed it mid-session.
 
-**Already running a previous v8 beta?** Run the new **`Install.vbs` directly—no uninstall needed.** The installer keeps the existing internal Task Scheduler name and data directory for compatibility. It stages the new files and selected settings, compiles and checks the hidden launcher, then stops and replaces the previous watcher. It verifies the replacement watcher runs and, if upgrade validation fails, attempts to restore the previous version and scheduled task.
+**Already running a previous version?** Run the new **`Install.vbs` directly—no uninstall needed.** The installer keeps the existing internal Task Scheduler name and data directory for compatibility. It stages the new files and selected settings, compiles and checks the hidden launcher, then stops and replaces the previous watcher. It verifies the replacement watcher runs and, if upgrade validation fails, attempts to restore the previous version and scheduled task.
 
 **Keep your previous working ZIP** until you've successfully tested an upgrade and a restart. Recovery is best-effort, not a substitute for a backup. Unlike prior beta instructions, you *should not need to uninstall first* for this version.
 
