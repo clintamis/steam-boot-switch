@@ -70,7 +70,7 @@ Steam Boot Switch reads Steam's *active connection events* for the wireless Stea
 | --- | --- | --- |
 | Sony DualSense Edge | Wired USB-C, including reboot and disconnect tests | Worked |
 | Steam Controller | Wireless via Valve Puck/receiver; on/off detection verified | Worked |
-| Nintendo Switch 2 Pro | Wired USB-C Used successfully for a Windows startup / Big Picture auto-open test|
+| Nintendo Switch 2 Pro | Wired USB-C Used successfully for a Windows startup / Big Picture auto-open test| Worked |
 | Bluetooth-paired controllers | **Not tested** | **Compatibility unknown** |
 
 **Bluetooth support is not yet verified.** The tested wireless Steam Controller uses Valve's Puck, which should not be treated as evidence that ordinary Bluetooth controller connections work. Some adapters, virtual controllers, third-party drivers, and Bluetooth modes may not report an unambiguous active state. **Support is not universal or guaranteed.** Ambiguous status blocks automatic exit where possible.
