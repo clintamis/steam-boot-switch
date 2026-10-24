@@ -1,5 +1,6 @@
 [README.md](https://github.com/user-attachments/files/33900436/README.md)
-# Steam Boot Switch — Big Picture Auto-Open & Auto-Close
+# Steam Boot Switch
+Big Picture Auto-Open & Auto-Close
 
 **Controller connected during startup? Open Big Picture. Last controller disconnected when idle? Close Big Picture automatically.**
 
