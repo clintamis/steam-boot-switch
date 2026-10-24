@@ -39,8 +39,6 @@ For reliable testing, leave a wired controller connected *before* restarting Win
 
 **Already running a previous version?** Run the new **`Install.vbs` directly—no uninstall needed.** The installer keeps the existing internal Task Scheduler name and data directory for compatibility. It stages the new files and selected settings, compiles and checks the hidden launcher, then stops and replaces the previous watcher. It verifies the replacement watcher runs and, if upgrade validation fails, attempts to restore the previous version and scheduled task.
 
-**Keep your previous working ZIP** until you've successfully tested an upgrade and a restart. Recovery is best-effort, not a substitute for a backup. Unlike prior beta instructions, you *should not need to uninstall first* for this version.
-
 If Windows Script Host (`.vbs`) is blocked by workplace policy, fallback `.cmd` launchers are in `app/`. These display a console; don't override workplace security settings.
 
 ## Settings
