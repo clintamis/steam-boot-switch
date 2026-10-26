@@ -1,5 +1,5 @@
 STEAM BOOT SWITCH
-V1.1.0
+V1.1.1
 ============================================
 
 WHAT IT DOES
@@ -20,8 +20,8 @@ turning off the controller when you dock it or opening Big Picture after you
 undock it. The Puck must be connected to your PC for these features.
 
 GET STARTED - INSTALLATION INSTRUCTIONS
-1. Double-click SteamBootSwitchSetup-1.1.0.exe.
-2. Follow the graphical installer. Settings opens when installation finishes.
+1. Double-click SteamBootSwitchSetup-1.1.1.exe.
+2. Read the welcome screen and follow the installer. Settings opens when installation finishes.
 3. To change your preferences later, open "Steam Boot Switch" from the Windows
    Start Menu. Select "Save and apply" to save your changes.
 
@@ -58,12 +58,12 @@ Steam Window
   previous size, maximize it, or use custom dimensions.
 
 UPGRADING
-Run the installer again over a compatible existing installation. You do not
-need to uninstall the previous version first. The installer preserves valid
-saved settings and replaces recognized older UI versions and shortcuts with
-one "Steam Boot Switch" Start Menu entry. It stops rather than overwriting
-an unknown or different native watcher build or an incompatible settings
-schema.
+Run the installer again over a compatible existing installation. The installer
+validates and stops the published V1.1.0 watcher, replaces it with the named
+watcher, preserves valid settings, and updates the startup action. You do not
+need to uninstall the previous version first. Recognized older UI versions
+and shortcuts are replaced with one "Steam Boot Switch" Start Menu entry. An
+unknown watcher build or incompatible settings schema is left untouched.
 
 If you kept settings during uninstall, setup reuses them. Exported backups
 can be restored by copying one to config.json while the app is stopped.
@@ -145,8 +145,8 @@ with Valve or Microsoft. See CHANGELOG.txt for the V1.1 feature summary and
 known issues.
 
 VALIDATION
-V1.1.0 was rebuilt and passed automated build, settings, installer, migration
-and package checks. The owner reports that RC1 passed local Windows acceptance
+V1.1.1 restores the installer welcome screen. Its final Windows build and QA
+are pending. V1.1.0 passed automated build, settings, installer, migration and package checks. The owner reports RC1 local Windows acceptance
 testing; no additional cross-PC acceptance testing is claimed. See QA-REPORT.md
 for the checks performed and their limits. A fresh install in an isolated
 folder on the development PC is not a clean-PC test.

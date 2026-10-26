@@ -1,11 +1,12 @@
-﻿param([ValidateSet('Preflight','Install','Uninstall')][string]$Mode,
+param([ValidateSet('Preflight','Install','Uninstall')][string]$Mode,
     [Parameter(Mandatory=$true)][string]$Root, [switch]$TestMode,
     [ValidateSet('Keep','Export','Delete')][string]$SettingsAction='Keep')
 $ErrorActionPreference='Stop'
 $Root=[IO.Path]::GetFullPath($Root).TrimEnd('\')
-$exe=Join-Path $Root 'SteamBootSwitchNative-alpha4.exe'
-$taskName=if($TestMode){'SteamBootSwitch_V110_QA'}else{'SteamControllerBootMode_EarlyLogon_v8'}
-$group=if($TestMode){'Steam Boot Switch V1.1.0 QA'}else{'Steam Boot Switch'}
+$exe=Join-Path $Root 'SteamBootSwitch.exe'
+$oldExe=Join-Path $Root 'SteamBootSwitchNative-alpha4.exe'
+$taskName=if($TestMode){'SteamBootSwitch_V111_QA'}else{'SteamControllerBootMode_EarlyLogon_v8'}
+$group=if($TestMode){'Steam Boot Switch V1.1.1 QA'}else{'Steam Boot Switch'}
 $programs=Join-Path ([Environment]::GetFolderPath('Programs')) $group
 $startup=Join-Path ([Environment]::GetFolderPath('Startup')) ($group+' Monitor.lnk')
 $result=Join-Path $env:TEMP ('SteamBootSwitch-'+$Mode+'-Result.txt')
@@ -13,8 +14,10 @@ $result=Join-Path $env:TEMP ('SteamBootSwitch-'+$Mode+'-Result.txt')
 $legacyRecognized=Test-SbsV1 $Root
 $legacyExe=Join-Path $Root 'SteamBootHiddenLauncher-1.0.0.exe'
 function Instances {
-    @(Get-CimInstance Win32_Process -Filter "Name='SteamBootSwitchNative-alpha4.exe'" |
+    @(Get-CimInstance Win32_Process -Filter "Name='SteamBootSwitch.exe'" |
         Where-Object {$_.ExecutablePath -ieq $exe})
+    @(Get-CimInstance Win32_Process -Filter "Name='SteamBootSwitchNative-alpha4.exe'" |
+        Where-Object {$_.ExecutablePath -ieq $oldExe})
     if($legacyRecognized){Get-SbsV1Processes $Root}
 }
 function Check-Path {
@@ -23,7 +26,7 @@ function Check-Path {
         if([IO.Directory]::Exists($p) -and (([IO.File]::GetAttributes($p) -band [IO.FileAttributes]::ReparsePoint) -ne 0)){throw 'Installation path contains a junction or symbolic link.'}
         $p=[IO.Path]::GetDirectoryName($p)
     }
-    foreach($f in @('config.json','SteamBootSwitchNative-alpha4.exe','stop.flag','SteamControllerBootMode.ps1','HiddenLauncher.cs','SteamBootHiddenLauncher-1.0.0.exe','rc1-backup')){
+    foreach($f in @('config.json','SteamBootSwitch.exe','SteamBootSwitchNative-alpha4.exe','stop.flag','SteamControllerBootMode.ps1','HiddenLauncher.cs','SteamBootHiddenLauncher-1.0.0.exe','rc1-backup')){
         $p=Join-Path $Root $f
         if([IO.File]::Exists($p) -and (([IO.File]::GetAttributes($p) -band [IO.FileAttributes]::ReparsePoint) -ne 0)){throw "Unsafe linked file: $f"}
     }
@@ -42,6 +45,7 @@ function Owned-Tasks {
         $actions=@($_.Actions)
         $_.TaskName -like 'Steam*' -and $actions.Count -eq 1 -and
         ((([string]$actions[0].Execute).Trim('"') -ieq $exe) -or
+          (([string]$actions[0].Execute).Trim('"') -ieq $oldExe) -or
           ($legacyRecognized -and ([string]$actions[0].Execute).Trim('"') -ieq $legacyExe))
     })
 }
@@ -49,6 +53,7 @@ function Check-Task {
     $t=Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
     if($t -and (@($t.Actions).Count -ne 1 -or
       (([string]$t.Actions[0].Execute).Trim('"') -ine $exe -and
+       (([string]$t.Actions[0].Execute).Trim('"') -ine $oldExe) -and
        !($legacyRecognized -and ([string]$t.Actions[0].Execute).Trim('"') -ieq $legacyExe)))){
         throw 'A startup task with this name belongs to a different installation.'
     }
@@ -66,9 +71,11 @@ try {
     if($Mode -eq 'Preflight'){
         if([IO.File]::Exists($cfg)){[void](Read-SbsConfig $cfg)}
         if([IO.File]::Exists($Root+'\SteamControllerBootMode.ps1') -and !$legacyRecognized){throw 'Unrecognized legacy watcher source. No files were replaced.'}
-        if([IO.File]::Exists($exe)){
+        foreach($candidate in @($exe,$oldExe)){
+          if([IO.File]::Exists($candidate)){
             $known=[IO.File]::ReadAllLines((Join-Path $PSScriptRoot 'recognized-engines.txt'))
-            if((Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash -notin $known){throw 'Unknown watcher version. Setup will not overwrite it.'}
+            if((Get-FileHash -LiteralPath $candidate -Algorithm SHA256).Hash -notin $known){throw "Unknown watcher version: $([IO.Path]::GetFileName($candidate)). Setup will not overwrite it."}
+          }
         }
         Check-Task
         # Refuse to replace an open settings UI: it may contain unsaved choices.
@@ -78,8 +85,12 @@ try {
         }
         if([IO.File]::Exists($exe)){
             [void][IO.Directory]::CreateDirectory((Join-Path $Root 'rc1-backup'))
-            [IO.File]::Copy($exe,(Join-Path $Root 'rc1-backup\SteamBootSwitchNative-alpha4.exe'),$true)
+            [IO.File]::Copy($exe,(Join-Path $Root 'rc1-backup\SteamBootSwitch.exe'),$true)
             if([IO.File]::Exists($cfg)){[IO.File]::Copy($cfg,(Join-Path $Root 'rc1-backup\config.json'),$true)}
+        }
+        if([IO.File]::Exists($oldExe)){
+            [void][IO.Directory]::CreateDirectory((Join-Path $Root 'rc1-backup'))
+            [IO.File]::Copy($oldExe,(Join-Path $Root 'rc1-backup\SteamBootSwitchNative-alpha4.exe'),$true)
         }
         if($legacyRecognized){
             [void][IO.Directory]::CreateDirectory((Join-Path $Root 'rc1-backup'))
@@ -136,6 +147,8 @@ try {
         Start-Sleep -Seconds 3
         # A PC without Steam installed may validly have no active monitor.
         $running=@(Instances).Count
+        # Retire the recognized V1.1.0 image only after the replacement monitor starts.
+        if([IO.File]::Exists($oldExe)){[IO.File]::Delete($oldExe)}
         [IO.File]::WriteAllText((Join-Path $Root 'installation-status.txt'),"StartupTask=$registered; MonitorProcesses=$running; Installed=$(Get-Date -Format o)")
         if($legacyRecognized){
             # Retire recognized V1 runtime only after the replacement is installed.
@@ -158,7 +171,7 @@ try {
         foreach($t in @(Owned-Tasks)){Unregister-ScheduledTask -TaskName $t.TaskName -TaskPath $t.TaskPath -Confirm:$false -ErrorAction Stop}
         if([IO.File]::Exists($startup)){
             $w=New-Object -ComObject WScript.Shell;$s=$w.CreateShortcut($startup)
-            if($s.TargetPath -ieq $exe){[IO.File]::Delete($startup)}
+            if($s.TargetPath -ieq $exe -or $s.TargetPath -ieq $oldExe){[IO.File]::Delete($startup)}
         }
         if($SettingsAction -ne 'Keep' -and [IO.File]::Exists($cfg)){[IO.File]::Delete($cfg)}
         if($SettingsAction -ne 'Keep'){
@@ -172,7 +185,7 @@ try {
         # Remove only recovery files created by this installer, never an arbitrary folder tree.
         $backup=Join-Path $Root 'rc1-backup'
         if([IO.Directory]::Exists($backup) -and (([IO.File]::GetAttributes($backup) -band [IO.FileAttributes]::ReparsePoint) -eq 0)){
-            foreach($name in @('SteamBootSwitchNative-alpha4.exe','config.json','SteamControllerBootMode.ps1','HiddenLauncher.cs','SteamBootHiddenLauncher-1.0.0.exe')){
+            foreach($name in @('SteamBootSwitch.exe','SteamBootSwitchNative-alpha4.exe','config.json','SteamControllerBootMode.ps1','HiddenLauncher.cs','SteamBootHiddenLauncher-1.0.0.exe')){
                 $f=Join-Path $backup $name;if([IO.File]::Exists($f)){[IO.File]::Delete($f)}
             }
             if([IO.Directory]::GetFileSystemEntries($backup).Count -eq 0){[IO.Directory]::Delete($backup)}

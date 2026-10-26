@@ -1,7 +1,7 @@
 $ErrorActionPreference='Stop'
 $r=$PSScriptRoot
 $dist=Join-Path $r 'dist'
-$installer=Join-Path $dist 'SteamBootSwitchSetup-1.1.0.exe'
+$installer=Join-Path $dist 'SteamBootSwitchSetup-1.1.1.exe'
 if(![IO.File]::Exists($installer)){throw 'Build the installer first.'}
 Add-Type -AssemblyName System.IO.Compression,System.IO.Compression.FileSystem
 $files=New-Object 'System.Collections.Generic.List[string]'
@@ -22,12 +22,12 @@ foreach($name in @($files|Sort-Object -Unique)){
 }
 [IO.File]::WriteAllLines((Join-Path $r 'SOURCE-SHA256SUMS.txt'),$manifest)
 $files.Add('SOURCE-SHA256SUMS.txt')
-$zip=Join-Path $dist 'SteamBootSwitch-1.1.0-source.zip'
+$zip=Join-Path $dist 'SteamBootSwitch-1.1.1-source.zip'
 if([IO.File]::Exists($zip)){[IO.File]::Delete($zip)}
 $archive=[IO.Compression.ZipFile]::Open($zip,'Create')
 try {
     foreach($name in @($files|Sort-Object -Unique)){
-        [void][IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive,(Join-Path $r $name),('SteamBootSwitch-1.1.0/'+$name),'Optimal')
+        [void][IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive,(Join-Path $r $name),('SteamBootSwitch-1.1.1/'+$name),'Optimal')
     }
 } finally {$archive.Dispose()}
 # Read and hash every decompressed entry; compare to its exact source file.
@@ -35,7 +35,7 @@ $archive=[IO.Compression.ZipFile]::OpenRead($zip)
 $count=0
 try {
     foreach($entry in $archive.Entries){
-        $name=$entry.FullName.Substring('SteamBootSwitch-1.1.0/'.Length)
+        $name=$entry.FullName.Substring('SteamBootSwitch-1.1.1/'.Length)
         if($name.Contains('..') -or [IO.Path]::IsPathRooted($name)){throw 'Unsafe ZIP entry'}
         $stream=$entry.Open();$sha=[Security.Cryptography.SHA256]::Create()
         try{$actual=[BitConverter]::ToString($sha.ComputeHash($stream)).Replace('-','')}finally{$stream.Dispose();$sha.Dispose()}

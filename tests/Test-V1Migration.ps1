@@ -2,7 +2,7 @@ param([Parameter(Mandatory=$true)][string]$LegacyFolder)
 $ErrorActionPreference='Stop'
 $r=Split-Path $PSScriptRoot -Parent
 $root=Join-Path $PSScriptRoot 'installed'
-$task='SteamBootSwitch_V110_QA'
+$task='SteamBootSwitch_V111_QA'
 $lines=New-Object 'System.Collections.Generic.List[string]'
 function Check($ok,[string]$label){if(!$ok){throw $label};$lines.Add('PASS '+$label)}
 function Run($file,$a){$p=Start-Process $file -ArgumentList $a -WindowStyle Hidden -PassThru;if(!$p.WaitForExit(90000)){throw 'Timed out'};return $p.ExitCode}
@@ -27,11 +27,11 @@ try {
     $action=New-ScheduledTaskAction -Execute $oldExe
     Register-ScheduledTask -TaskName $task -Action $action -Force|Out-Null
     $old=Start-Process $oldExe -WindowStyle Hidden -PassThru
-    $result=Run ($r+'\dist\SteamBootSwitchSetup-1.1.0.exe') ('/VERYSILENT /SUPPRESSMSGBOXES /SBSTEST=1 /DIR="'+$root+'" /LOG="'+$PSScriptRoot+'\v1-migration.log"')
+    $result=Run ($r+'\dist\SteamBootSwitchSetup-1.1.1.exe') ('/VERYSILENT /SUPPRESSMSGBOXES /SBSTEST=1 /DIR="'+$root+'" /LOG="'+$PSScriptRoot+'\v1-migration.log"')
     Check ($result -eq 0) 'V1 migration installer succeeds'
     Check ($old.HasExited) 'Owned old launcher stopped'
     Check ([IO.File]::ReadAllText($root+'\config.json') -ceq $text) 'Legacy ten-field settings preserved byte-for-byte'
-    Check ((Get-ScheduledTask -TaskName $task).Actions.Execute -ieq ($root+'\SteamBootSwitchNative-alpha4.exe')) 'Old task replaced by native engine task'
+    Check ((Get-ScheduledTask -TaskName $task).Actions.Execute -ieq ($root+'\SteamBootSwitch.exe')) 'Old task replaced by V1.1.1 Steam Boot Switch task'
     Check (![IO.File]::Exists($oldExe) -and ![IO.File]::Exists($root+'\SteamControllerBootMode.ps1')) 'Recognized obsolete runtime retired'
     Check ([IO.File]::Exists($root+'\rc1-backup\SteamControllerBootMode.ps1')) 'Legacy recovery files retained'
     Check ((Run ($root+'\unins000.exe') '/VERYSILENT /SUPPRESSMSGBOXES /SETTINGS=Delete') -eq 0) 'Migrated installation uninstalls'
@@ -40,7 +40,7 @@ try {
     foreach($name in @('SteamControllerBootMode.ps1','HiddenLauncher.cs')){[IO.File]::Copy((Join-Path $LegacyFolder $name),(Join-Path $root $name),$true)}
     [IO.File]::AppendAllText($root+'\SteamControllerBootMode.ps1',"`n# modified")
     Check (!(Test-SbsV1 $root)) 'Modified V1 source refused recognition'
-    Check ((Run ($r+'\dist\SteamBootSwitchSetup-1.1.0.exe') ('/VERYSILENT /SUPPRESSMSGBOXES /SBSTEST=1 /DIR="'+$root+'"')) -ne 0) 'Modified V1 installation refused before changes'
+    Check ((Run ($r+'\dist\SteamBootSwitchSetup-1.1.1.exe') ('/VERYSILENT /SUPPRESSMSGBOXES /SBSTEST=1 /DIR="'+$root+'"')) -ne 0) 'Modified V1 installation refused before changes'
     foreach($name in @('SteamControllerBootMode.ps1','HiddenLauncher.cs')){[IO.File]::Delete((Join-Path $root $name))}
     [IO.File]::WriteAllLines(($PSScriptRoot+'\migration-results.txt'),$lines)
 } catch {$lines.Add('FAIL '+$_);[IO.File]::WriteAllLines(($PSScriptRoot+'\migration-results.txt'),$lines);exit 1}

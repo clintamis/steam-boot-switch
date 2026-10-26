@@ -1,3 +1,38 @@
+# Steam Boot Switch V1.1.1 — QA report
+
+## Automated results (Windows, 2026-10-26)
+
+| Check | Result | Evidence |
+| --- | --- | --- |
+| Build from source and installer compile | PASS | .NET Framework C# compilation, watcher self-test, Inno Setup 6.7.3 compile |
+| Settings and schema | PASS | 35 checks: all 13 fields round-trip; validation, merge, backup, atomic-save and no-op behavior |
+| Install, upgrade, uninstall and reinstall | PASS | 47 checks: clean install, settings/apply, single Start Menu entry, registry, preservation/export and safe refusal cases |
+| Upgrade from published V1.1.0 | PASS | Ran downloaded V1.1.0 installer in isolated QA location; preserved `config.json` byte-for-byte, stopped both old processes, replaced old executable and task action, retained one Installed Apps registration |
+| V1.0.0 migration | PASS | 11 checks using archived source and benign legacy launcher fixture; preserved ten-field settings and refused modified source |
+| Final installer integration | PASS | 21 checks: installed payload hashes, actual scheduled-task startup, settings initialization and uninstall cleanup |
+| Watcher Task Manager identity | PASS | New process image `SteamBootSwitch.exe`; Windows file description/product name `Steam Boot Switch`; embedded icon resource present (32×32) |
+| Resource sample | PASS, one sample | 30.004 seconds, 0.0293% of 16-core machine capacity, 53.11 MiB combined working set; reference was ~0.03% and ~75.65 MB |
+| Source ZIP, checksums and final SHA-256 values | PASS | `Package.ps1` verified all 53 ZIP entries against source and generated installer/source/report hashes |
+
+The lifecycle test first exposed a test-harness-only issue (the icon type was
+not loaded in PowerShell); the harness was corrected and rerun. The final runs
+reported no failed checks. The published V1.1.0 installer used for migration
+matched SHA-256 `C7B0BE2C0EAE1F4692B8A92406B1EECE31FCC15DB1B9653273D59A81A2411ADB`.
+
+## Limits
+
+The welcome page compiled and the installer ran in silent install/upgrade
+tests. Its visual layout at 100%, 125%, and 150% DPI and the interactive
+welcome-page text were not visually inspected. No mouse or screen control was
+used. No physical controller/Puck docking, Bluetooth matrix, cross-PC hardware,
+or Big Picture foreground-focus test was run for this patch. The installer is
+unsigned. Steam may occasionally take foreground focus when Big Picture
+closes; cross-PC and Bluetooth testing remain incomplete.
+
+The historical V1.1.0 report follows. Its measurements and acceptance evidence
+are not V1.1.1 test results.
+
+---
 # Steam Boot Switch V1.1.0 — QA report
 
 ## Baseline and acceptance

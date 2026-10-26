@@ -1,4 +1,4 @@
-# Building Steam Boot Switch 1.1.0
+# Building Steam Boot Switch 1.1.1
 
 Use Windows 10/11 with .NET Framework 4.8, Windows PowerShell 5.1, and
 [Inno Setup 6](https://jrsoftware.org/isdl.php) (tested with 6.7.3).
@@ -10,8 +10,10 @@ From this folder, run:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Build.ps1 -InnoCompiler "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
 ```
 
-The script compiles the watcher and settings launcher from `src`, runs the
-watcher's self-test, and builds `dist\SteamBootSwitchSetup-1.1.0.exe`.
+The script compiles the watcher and settings launcher from `src`, embeds the
+Steam Boot Switch icon into both executables, removes only a hash-recognized
+obsolete watcher build, runs the watcher's self-test, and builds
+`dist\SteamBootSwitchSetup-1.1.1.exe`.
 The WPF interface and settings store are the PowerShell source in `app`.
 The installer uses `Setup.iss` and `app\Maintenance.ps1`.
 The settings process runs only while Settings is open.
@@ -19,8 +21,10 @@ The settings process runs only while Settings is open.
 This is a reproducible build procedure, not a claim of bit-identical binaries:
 the .NET Framework compiler embeds a timestamp/MVID, and Inno embeds build data.
 `recognized-engines.txt` records known previous watcher hashes plus builds made
-by this script, allowing safe upgrade recognition. The six initial hashes
-are documented in SOURCE-PROVENANCE.md. Do not add unverified executables.
+by this script, allowing safe upgrade recognition. The installer migrates the
+V1.1.0 `SteamBootSwitchNative-alpha4.exe` image to `SteamBootSwitch.exe` while
+preserving settings and validating the previous image's hash. The initial
+hashes are documented in SOURCE-PROVENANCE.md. Do not add unverified binaries.
 
 ## Automated verification
 
@@ -31,12 +35,12 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tests\Test-Lifecycle.p
 
 The settings tests construct and render the UI without showing a window.
 Lifecycle tests run the actual installer silently with `/SBSTEST=1`, use
-`tests\installed`, a separate `SteamBootSwitch_V110_QA` scheduled task,
+`tests\installed`, a separate `SteamBootSwitch_V111_QA` scheduled task,
 a separate Installed Apps registration and a separate QA Start Menu folder.
 They exercise actual native processes and HID detection, but disable automatic
 Steam actions in the QA defaults. They leave no running QA processes/task.
-The production monitor is not stopped. Optional `-LegacyEngine` accepts an
-archived, recognized Alpha executable to exercise an Alpha upgrade fixture.
+The production monitor is not stopped. Optional `-LegacyEngine` accepts a
+recognized V1.1.0 watcher executable to exercise the previous-image upgrade.
 Run only one lifecycle test at a time. A failed test may leave its QA task;
 run `tests\installed\unins000.exe /VERYSILENT /SETTINGS=Delete` to clean it up.
 

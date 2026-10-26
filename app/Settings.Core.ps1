@@ -66,11 +66,11 @@ function Save-SbsConfig([string]$Path, $Baseline, $Chosen, [switch]$AllowCreate)
     return [pscustomobject]@{Changed=$changed;RestartRequired=(@($changed | Where-Object {$_ -ne 'undockBigPictureMode'}).Count -gt 0)}
 }
 function Restart-SbsMonitor([string]$Root) {
-    $exe=Join-Path $Root 'SteamBootSwitchNative-alpha4.exe'
+    $exe=Join-Path $Root 'SteamBootSwitch.exe'
     $flag=Join-Path $Root 'stop.flag'
     if (![IO.File]::Exists($exe)) { throw 'Monitor executable not found. Settings are saved for the next start.' }
     function Get-SettingsMonitorInstances {
-        @(Get-CimInstance Win32_Process -Filter "Name='SteamBootSwitchNative-alpha4.exe'" -ErrorAction Stop | Where-Object {$_.ExecutablePath -ieq $exe})
+        @(Get-CimInstance Win32_Process -Filter "Name='SteamBootSwitch.exe'" -ErrorAction Stop | Where-Object {$_.ExecutablePath -ieq $exe})
     }
     if (@(Get-SettingsMonitorInstances).Count -eq 0) { return 'Settings saved. They will apply when the monitor next starts.' }
     if ([IO.File]::Exists($flag)) { throw 'Another operation is stopping the monitor. Settings are saved; apply them after that operation finishes.' }
