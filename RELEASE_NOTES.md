@@ -19,4 +19,7 @@ Compatible existing installations can upgrade in place; do not uninstall first.
 The installer remains unsigned. Steam can occasionally take foreground focus
 when Big Picture closes. Cross-PC and Bluetooth testing remains incomplete.
 
-**Release status:** prepared as a draft for review. It has not been published.
+## Verification
+Automated Windows build, settings, installer lifecycle, and migration checks
+passed; see `QA-REPORT.md` for results and testing limits. The owner reviewed
+and approved the installer welcome screen.
