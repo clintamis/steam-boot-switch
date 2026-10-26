@@ -125,8 +125,9 @@ KNOWN LIMITATIONS
   publisher warning. Verify the supplied SHA-256 before running it.
 - The watcher and settings launcher are rebuilt from the included C# source.
   Experimental focus-recovery code is excluded.
-- Full clean-install, upgrade, uninstall, and compatibility testing across
-  multiple Windows PCs is still needed before the public V1.1 release.
+- Automated clean-folder, upgrade, uninstall and migration checks passed on the
+  development PC; the owner reports local RC1 Windows acceptance testing.
+  Cross-PC compatibility testing remains incomplete.
 
 TROUBLESHOOTING
 - If Big Picture does not open at sign-in, check that Steam starts with Windows,
@@ -144,7 +145,8 @@ with Valve or Microsoft. See CHANGELOG.txt for the V1.1 feature summary and
 known issues.
 
 VALIDATION
-The owner reports RC1 passed local Windows acceptance testing.
-See QA-REPORT.md for automated results and tests still requiring hardware.
-A fresh install in an isolated folder on the development PC is not a test
-of a clean Windows installation. See the repository release page for publication status.
+V1.1.0 was rebuilt and passed automated build, settings, installer, migration
+and package checks. The owner reports that RC1 passed local Windows acceptance
+testing; no additional cross-PC acceptance testing is claimed. See QA-REPORT.md
+for the checks performed and their limits. A fresh install in an isolated
+folder on the development PC is not a clean-PC test.
