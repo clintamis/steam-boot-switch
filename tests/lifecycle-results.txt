@@ -1,6 +1,9 @@
 PASS Clean installer exits successfully
 PASS Clean install starts native watcher and worker
 PASS Task points to isolated watcher
+PASS Clean install contains no obsolete watcher image
+PASS Watcher has friendly Task Manager product metadata
+PASS Watcher includes the Steam Boot Switch icon resource
 PASS Installed Apps registration
 PASS Exactly one Start Menu application
 PASS Installed settings entry initializes without showing a window
@@ -19,10 +22,19 @@ PASS Reinstall uses preserved settings
 PASS Uninstall exports settings
 PASS Export uninstall removes live settings
 PASS Export matches exact settings
-PASS Recognized previous native build upgrade (RC1 fixture)
-PASS Legacy upgrade retains settings
-PASS Legacy engine replaced by rebuilt V1.1.0
-PASS Explicit silent delete-settings uninstall
+PASS Published V1.1.0 installer installs into isolated QA folder
+PASS V1.1.0 QA task uses the original watcher image
+PASS V1.1.0 to V1.1.1 in-place upgrade succeeds
+PASS V1.1.0 to V1.1.1 upgrade preserves settings byte-for-byte
+PASS V1.1.0 startup task is updated to the new watcher image
+PASS V1.1.0 watcher task is retired
+PASS Old V1.1.0 watcher image is replaced
+PASS Upgrade retains one updated Installed Apps registration
+PASS Upgraded watcher and worker start successfully
+PASS V1.1.1 removes the upgraded QA installation
+PASS Upgrade cleanup removes task and keeps settings
+PASS Unrecognized old-name watcher refused
+PASS Unrecognized old-name watcher left untouched
 PASS Unknown watcher refused
 PASS Unknown watcher left untouched
 PASS Invalid settings refused before replacement

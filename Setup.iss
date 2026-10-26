@@ -1,8 +1,8 @@
 [Setup]
 AppId={code:AppIdentity}
 AppName=Steam Boot Switch
-AppVersion=1.1.0
-AppVerName=Steam Boot Switch 1.1.0
+AppVersion=1.1.1
+AppVerName=Steam Boot Switch 1.1.1
 AppPublisher=Steam Boot Switch contributors
 DefaultDirName={localappdata}\SteamControllerBootMode
 DefaultGroupName={code:GroupName}
@@ -11,16 +11,18 @@ DisableDirPage=yes
 PrivilegesRequired=lowest
 MinVersion=10.0
 OutputDir=dist
-OutputBaseFilename=SteamBootSwitchSetup-1.1.0
+OutputBaseFilename=SteamBootSwitchSetup-1.1.1
 SetupIconFile=app\SteamBootSwitch.ico
 UninstallDisplayIcon={app}\SteamBootSwitch.ico
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
+DisableWelcomePage=no
+WizardSizePercent=130
 CloseApplications=no
 RestartApplications=no
 LicenseFile=LICENSE
-VersionInfoVersion=1.1.0.0
+VersionInfoVersion=1.1.1.0
 UsePreviousAppDir=yes
 UsePreviousLanguage=no
 
@@ -48,11 +50,38 @@ begin
 end;
 function AppIdentity(Param: String): String;
 begin
+  // Keep the V1.1.0 isolated test identity so this installer exercises an in-place QA upgrade.
   if TestInstall then Result := 'SteamBootSwitch_V110_QA' else Result := 'SteamBootSwitch';
 end;
 function GroupName(Param: String): String;
 begin
-  if TestInstall then Result := 'Steam Boot Switch V1.1.0 QA' else Result := 'Steam Boot Switch';
+  if TestInstall then Result := 'Steam Boot Switch V1.1.1 QA' else Result := 'Steam Boot Switch';
+end;
+// Restored 1.1.1 welcome page (originally developed for Preview 2).
+// This modifies the native Inno wizard, not a separate pop-up.
+procedure InitializeWizard;
+var
+  WelcomeText: String;
+  InstallDir: String;
+  ShortcutPath: String;
+begin
+  InstallDir := WizardDirValue;
+  ShortcutPath := ExpandConstant('{userprograms}') + '\' + WizardGroupValue + '\Steam Boot Switch.lnk';
+  WelcomeText :=
+    'Steam Boot Switch opens and closes Steam Big Picture based on your ' +
+    'controller activity, helping your home theater or living-room PC feel ' +
+    'more like a console when you want it - and a regular PC when you need it.' + #13#10#13#10 +
+    'Installation folder:' + #13#10 + InstallDir + #13#10#13#10 +
+    'Start Menu shortcut:' + #13#10 + ShortcutPath + #13#10#13#10;
+  if FileExists(AddBackslash(InstallDir) + 'config.json') then
+    WelcomeText := WelcomeText +
+      'Upgrading from an earlier version? Your saved settings will be kept.' + #13#10#13#10;
+  WelcomeText := WelcomeText +
+    'When installation finishes, Steam Boot Switch Settings will open automatically.';
+  WizardForm.WelcomeLabel1.Caption := 'Welcome to Steam Boot Switch V1.1.1!';
+  WizardForm.WelcomeLabel2.WordWrap := True;
+  WizardForm.WelcomeLabel2.Caption := WelcomeText;
+  WizardForm.WelcomeLabel2.AdjustHeight;
 end;
 function InitializeSetup: Boolean;
 var Release: Cardinal;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -94,7 +94,7 @@ internal static class Program {
         Config c;
         try{c=Config.Load(Path.Combine(Log.Root,"config.json"));}
         catch(Exception ex){Log.Write("INVALID CONFIG: "+ex.Message+"; using defaults but DISABLING auto-exit and power commands.");c=new Config();c.autoExitOnDisconnect=false;c.autoPowerOffOnDock=false;}
-        Log.Write("Started Steam Boot Switch v1.1.0; monitorOnly="+monitorOnly+"; autoOpenOnStartup="+c.autoOpenOnStartup+"; gameGuard=steam-processes; cleanup=no-activate; undockMode="+c.undockBigPictureMode+"; autoExit="+c.autoExitOnDisconnect+
+        Log.Write("Started Steam Boot Switch v1.1.1; monitorOnly="+monitorOnly+"; autoOpenOnStartup="+c.autoOpenOnStartup+"; gameGuard=steam-processes; cleanup=no-activate; undockMode="+c.undockBigPictureMode+"; autoExit="+c.autoExitOnDisconnect+
             "; autoPowerOffOnDock="+c.autoPowerOffOnDock+"; grace="+c.disconnectGraceSeconds+"s.");
         string steam=SteamFolder();
         if(steam==null){Log.Write("Steam folder unavailable, cannot safely detect sessions.");return;}

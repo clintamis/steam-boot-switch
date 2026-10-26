@@ -1,5 +1,13 @@
 # Changelog
 
+## V1.1.1 - Installer and Task Manager improvements
+
+- Restored a welcome page inside the graphical Windows installer explaining what Steam Boot Switch does.
+- Shows the installation location and Start Menu shortcut, with settings-preservation text only for existing configurations.
+- Gives the watcher a recognizable Steam Boot Switch name, product description, and embedded app icon in Task Manager.
+- Migrates recognized V1.1.0 watcher files and tasks to the new executable name, removes the obsolete image after the new watcher starts, and preserves configuration.
+- Controller detection, Puck logic, Big Picture behavior, and settings schema remain unchanged.
+- Windows build and automated QA are complete; see QA-REPORT.md for checks and remaining verification limits.
 ## V1.1.0
 
 - Rebuilt the native C# watcher from complete source; retained isolated Puck

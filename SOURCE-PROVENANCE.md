@@ -1,3 +1,14 @@
+# V1.1.1 patch provenance
+
+V1.1.1 restores the native Inno Setup welcome page and embeds the application
+icon and friendly version metadata into the native watcher. The watcher file
+name changes from `SteamBootSwitchNative-alpha4.exe` to `SteamBootSwitch.exe`.
+The installer recognizes the prior image, validates its published hash,
+stops its process, preserves it in the installer recovery folder, registers
+the new image as the scheduled task action, and removes the old image only
+after the new monitor starts. Controller monitoring, Puck operations,
+actuation logic, and configuration schema are unchanged. Historical V1.1.0
+provenance follows.
 # V1.1.0 release provenance
 
 V1.1.0 promotes the RC1 baseline below. Engine equivalence is checked in

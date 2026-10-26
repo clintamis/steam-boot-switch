@@ -4,7 +4,7 @@ $r=$PSScriptRoot
 $csc=Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
 if(!(Test-Path $csc)){$csc=Join-Path $env:WINDIR 'Microsoft.NET\Framework\v4.0.30319\csc.exe'}
 $common=@('/nologo','/target:winexe','/optimize+','/platform:anycpu','/warn:4','/reference:System.dll','/reference:System.Core.dll')
-& $csc @common ('/out:'+$r+'\app\SteamBootSwitchNative-alpha4.exe') /reference:System.Windows.Forms.dll /reference:System.Drawing.dll /reference:System.Web.Extensions.dll ($r+'\src\Core.cs') ($r+'\src\Win.cs') ($r+'\src\PuckNative.cs') ($r+'\src\Program.cs') ($r+'\src\AssemblyInfo.cs')
+& $csc @common ('/out:'+$r+'\app\SteamBootSwitch.exe') ('/win32icon:'+$r+'\app\SteamBootSwitch.ico') /reference:System.Windows.Forms.dll /reference:System.Drawing.dll /reference:System.Web.Extensions.dll ($r+'\src\Core.cs') ($r+'\src\Win.cs') ($r+'\src\PuckNative.cs') ($r+'\src\Program.cs') ($r+'\src\AssemblyInfo.cs')
 if($LASTEXITCODE -ne 0){throw 'Watcher compilation failed.'}
 & $csc @common /reference:System.Windows.Forms.dll ('/out:'+$r+'\app\SteamBootSwitchSettings.exe') ('/win32icon:'+$r+'\app\SteamBootSwitch.ico') ($r+'\src\SettingsLauncher.cs') ($r+'\src\AssemblyInfo.cs')
 if($LASTEXITCODE -ne 0){throw 'Settings launcher compilation failed.'}
@@ -18,12 +18,18 @@ $known=@(
 # Each compilation changes the PE timestamp. Preserve recognized RC builds locally.
 $list=Join-Path $r 'app\recognized-engines.txt'
 if(Test-Path $list){$known+=Get-Content -LiteralPath $list}
-$known+=(Get-FileHash -LiteralPath ($r+'\app\SteamBootSwitchNative-alpha4.exe') -Algorithm SHA256).Hash
+$known+=(Get-FileHash -LiteralPath ($r+'\app\SteamBootSwitch.exe') -Algorithm SHA256).Hash
 [IO.File]::WriteAllLines($list,@($known|Sort-Object -Unique))
-$p=Start-Process -FilePath ($r+'\app\SteamBootSwitchNative-alpha4.exe') -ArgumentList ('--selftest "'+$r+'\tests\engine-selftest.txt"') -PassThru -WindowStyle Hidden
+$oldImage=Join-Path $r 'app\SteamBootSwitchNative-alpha4.exe'
+if(Test-Path -LiteralPath $oldImage){
+    $oldHash=(Get-FileHash -LiteralPath $oldImage -Algorithm SHA256).Hash
+    if($oldHash -notin $known){throw 'Refusing to package an unrecognized obsolete watcher executable.'}
+    Remove-Item -LiteralPath $oldImage -Force
+}
+$p=Start-Process -FilePath ($r+'\app\SteamBootSwitch.exe') -ArgumentList ('--selftest "'+$r+'\tests\engine-selftest.txt"') -PassThru -WindowStyle Hidden
 if(!$p.WaitForExit(30000) -or $p.ExitCode -ne 0){throw 'Engine self-test failed.'}
 if(!$InnoCompiler){$InnoCompiler=Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'}
 if(!(Test-Path $InnoCompiler)){throw 'Pass -InnoCompiler with the path to Inno Setup 6 ISCC.exe.'}
 & $InnoCompiler ($r+'\Setup.iss')
 if($LASTEXITCODE -ne 0){throw 'Installer compilation failed.'}
-Get-FileHash -LiteralPath ($r+'\dist\SteamBootSwitchSetup-1.1.0.exe') -Algorithm SHA256
+Get-FileHash -LiteralPath ($r+'\dist\SteamBootSwitchSetup-1.1.1.exe') -Algorithm SHA256

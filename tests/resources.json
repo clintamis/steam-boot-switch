@@ -1,11 +1,11 @@
 {
-    "seconds":  30.0091295,
-    "cpuMilliseconds":  218.75,
+    "seconds":  30.0038335,
+    "cpuMilliseconds":  140.625,
     "logicalProcessors":  16,
-    "oneCorePercent":  0.72894483660380749,
-    "machinePercent":  0.045559052287737968,
-    "combinedWorkingSetMB":  53.21484375,
-    "state":  "Idle/docked; QA actuation disabled; two native processes; UI closed",
+    "oneCorePercent":  0.46869010921554405,
+    "machinePercent":  0.029293131825971503,
+    "combinedWorkingSetMB":  53.109375,
+    "state":  "Idle monitoring; QA actuation disabled; two native processes; settings UI closed; controller state not asserted",
     "alpha42CpuPercent":  0.03,
     "alpha42WorkingSetMB":  75.65
 }

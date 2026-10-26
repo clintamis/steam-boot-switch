@@ -2,7 +2,7 @@ PASS Published V1 source recognized
 PASS V1 migration installer succeeds
 PASS Owned old launcher stopped
 PASS Legacy ten-field settings preserved byte-for-byte
-PASS Old task replaced by native engine task
+PASS Old task replaced by V1.1.1 Steam Boot Switch task
 PASS Recognized obsolete runtime retired
 PASS Legacy recovery files retained
 PASS Migrated installation uninstalls

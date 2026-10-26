@@ -1,11 +1,11 @@
-﻿# Steam Boot Switch V1.1 Preview - WPF visual redesign.
+# Steam Boot Switch V1.1 Preview - WPF visual redesign.
 # The UI is opened on demand; no resident UI or polling process.
 function New-SbsSettingsView($Config, [bool]$InstallerMode=$false) {
     Add-Type -AssemblyName PresentationFramework,PresentationCore,WindowsBase
     $xaml=@'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Steam Boot Switch - Settings (V1.1.0)" Width="1040" Height="740" MinWidth="890" MinHeight="660"
+        Title="Steam Boot Switch - Settings (V1.1.1)" Width="1040" Height="740" MinWidth="890" MinHeight="660"
         Background="#090B10" Foreground="#F1F5FB" FontFamily="Segoe UI" FontSize="13"
         WindowStartupLocation="CenterScreen" ResizeMode="CanResize"
         UseLayoutRounding="True" SnapsToDevicePixels="True">
@@ -173,7 +173,7 @@ function New-SbsSettingsView($Config, [bool]$InstallerMode=$false) {
         </StackPanel>
         <Border Grid.Column="2" Background="#17201B" CornerRadius="14" Padding="12,6"
                 VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,4,0,0">
-          <TextBlock Text="V1.1.0" Foreground="#C1FF89" FontSize="11"/>
+          <TextBlock Text="V1.1.1" Foreground="#C1FF89" FontSize="11"/>
         </Border>
       </Grid>
     </Grid>
@@ -371,7 +371,7 @@ function New-SbsSettingsView($Config, [bool]$InstallerMode=$false) {
         $controls[$key].Add_Unchecked($enable)
     }
     $controls['windowSizeMode'].Add_SelectionChanged($enable); & $enable
-    $monitor=Get-Process -Name 'SteamBootSwitchNative-alpha4' -ErrorAction SilentlyContinue
+    $monitor=Get-Process -Name 'SteamBootSwitch' -ErrorAction SilentlyContinue
     $controls['MonitorStatus'].Text=if($monitor){'Controller monitoring is running'}else{'Controller monitoring is not running'}
     if($InstallerMode){$controls['FooterHint'].Text='Installer preview. Save settings without restarting the watcher.';$controls['SaveButton'].Content='Save choices'}
     $controls['CancelButton'].Add_Click(({ $window.DialogResult=$false }).GetNewClosure())

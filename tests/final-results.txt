@@ -5,10 +5,12 @@ PASS Installed bytes match recognized-engines.txt
 PASS Installed bytes match Settings.Core.ps1
 PASS Installed bytes match Settings.ps1
 PASS Installed bytes match Settings.View.ps1
+PASS Installed bytes match SteamBootSwitch.exe
 PASS Installed bytes match SteamBootSwitch.ico
-PASS Installed bytes match SteamBootSwitchNative-alpha4.exe
 PASS Installed bytes match SteamBootSwitchSettings.exe
 PASS Installed bytes match SteamBootSwitchSettings.exe.config
+PASS Final watcher Task Manager metadata
+PASS Final watcher Task Manager icon resource
 PASS Final watcher and worker startup
 PASS Graceful shutdown before task launch test
 PASS Actual registered task starts watcher and worker
