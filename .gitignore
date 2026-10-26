@@ -1,0 +1,8 @@
+dist/
+app/*.exe
+app/*.pdb
+SOURCE-SHA256SUMS.txt
+tests/installed*/
+tests/settings-*/
+tests/*.log
+tests/*.png

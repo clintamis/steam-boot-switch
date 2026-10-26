@@ -1,0 +1,1 @@
+SELFTEST PASS - dock accounting, controller events, Steam game processes, startup settings, undock transitions, and launch gate

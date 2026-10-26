@@ -1,0 +1,35 @@
+PASS Clean installer exits successfully
+PASS Clean install starts native watcher and worker
+PASS Task points to isolated watcher
+PASS Installed Apps registration
+PASS Exactly one Start Menu application
+PASS Installed settings entry initializes without showing a window
+PASS Real save/apply restarts isolated watcher
+PASS RC upgrade installer exits successfully
+PASS Upgrade preserves settings byte-for-byte
+PASS Upgrade retains one Start Menu entry
+PASS Uninstall with settings preserved
+PASS Uninstall stops both owned processes
+PASS Uninstall removes owned task
+PASS Uninstall removes Installed Apps registration
+PASS Uninstall removes Start Menu entry
+PASS Uninstall Keep retains exact settings
+PASS Reinstall without previous application files
+PASS Reinstall uses preserved settings
+PASS Uninstall exports settings
+PASS Export uninstall removes live settings
+PASS Export matches exact settings
+PASS Recognized previous native build upgrade (RC1 fixture)
+PASS Legacy upgrade retains settings
+PASS Legacy engine replaced by rebuilt V1.1.0
+PASS Explicit silent delete-settings uninstall
+PASS Unknown watcher refused
+PASS Unknown watcher left untouched
+PASS Invalid settings refused before replacement
+PASS Failed preflight installs no watcher
+PASS Unrelated task name collision refused
+PASS Unrelated task left untouched
+PASS Fresh defaults install after complete removal
+PASS Final QA cleanup
+PASS No test processes or task remain
+PASS Installer recovery executables removed on uninstall

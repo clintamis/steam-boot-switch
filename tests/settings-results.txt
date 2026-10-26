@@ -1,0 +1,35 @@
+PASS 13 configuration fields
+PASS No-op preserves exact bytes
+PASS UI roundtrip autoOpenOnStartup
+PASS UI roundtrip startupWindowSeconds
+PASS UI roundtrip autoPowerOffOnDock
+PASS UI roundtrip undockBigPictureMode
+PASS UI roundtrip autoExitOnDisconnect
+PASS UI roundtrip disconnectGraceSeconds
+PASS UI roundtrip mouseActivityCancelsExit
+PASS UI roundtrip cleanupSteamWindow
+PASS UI roundtrip preHideSteamDesktop
+PASS UI roundtrip cleanupDelayMs
+PASS UI roundtrip windowSizeMode
+PASS UI roundtrip windowWidth
+PASS UI roundtrip windowHeight
+PASS Startup control dependency
+PASS Custom dimensions dependency
+PASS Undock mapping 0
+PASS Undock mapping 1
+PASS Undock mapping 2
+PASS UI rejects invalid numeric input
+PASS Three pages laid out and rendered without showing windows
+PASS Closing UI does not save
+PASS Hot reload and unknown fields preserved
+PASS Exact original backup
+PASS Merge unrelated external edits
+PASS Conflicting edit refused
+PASS Locked file save refused
+PASS No temporary files after failure
+PASS Reject invalid config {broken
+PASS Reject invalid config null
+PASS Reject invalid config []
+PASS Reject invalid config {"autoPowerOffOnDock":"false"}
+PASS Reject invalid config {"startupWindowSeconds":2}
+PASS Reject invalid config {"undockBigPictureMode":"Unknown"}

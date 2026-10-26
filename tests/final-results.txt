@@ -1,0 +1,19 @@
+PASS Final installer clean install
+PASS Installed bytes match LegacyUpgrade.ps1
+PASS Installed bytes match Maintenance.ps1
+PASS Installed bytes match recognized-engines.txt
+PASS Installed bytes match Settings.Core.ps1
+PASS Installed bytes match Settings.ps1
+PASS Installed bytes match Settings.View.ps1
+PASS Installed bytes match SteamBootSwitch.ico
+PASS Installed bytes match SteamBootSwitchNative-alpha4.exe
+PASS Installed bytes match SteamBootSwitchSettings.exe
+PASS Installed bytes match SteamBootSwitchSettings.exe.config
+PASS Final watcher and worker startup
+PASS Graceful shutdown before task launch test
+PASS Actual registered task starts watcher and worker
+PASS Final installed settings UI initialization
+PASS Final uninstaller with export
+PASS Export removes live and known backup settings
+PASS Final cleanup leaves no QA process or task
+PASS QA marker removed

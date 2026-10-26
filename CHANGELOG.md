@@ -1,5 +1,21 @@
 # Changelog
 
+## V1.1.0
+
+- Rebuilt the native C# watcher from complete source; retained isolated Puck
+  handling, cached process/state information and reduced stable-dock polling.
+- Added optional Steam Controller dock shutdown and configurable undock opening.
+- Replaced fullscreen-app assumptions with Steam game-process protection.
+- Added the tested Preview 2 settings interface, three sections and all 13 fields.
+- Preserved atomic settings writes, validation, unknown values and conflict handling.
+- Added a single graphical EXE installer, one Start Menu application and an
+  Installed Apps uninstaller with settings preserve/export choices.
+- Added verified V1.0.0 source/launcher migration and recognized native/RC1 upgrades.
+- Preserved no-activate window hiding and deferred sizing. Steam's focus issue
+  remains a known limitation; no FocusGuard included.
+- Finalized version labels, complete source packaging, checksums and QA evidence.
+- Existing MIT notice retained. Installer unsigned; cross-PC tests incomplete.
+
 ## v1.0.0 — First public release
 
 - Promoted the last reboot-tested Beta 10 application behavior to version 1.0.0 without functional changes.
