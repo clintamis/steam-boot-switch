@@ -1,0 +1,11 @@
+PASS Published V1 source recognized
+PASS V1 migration installer succeeds
+PASS Owned old launcher stopped
+PASS Legacy ten-field settings preserved byte-for-byte
+PASS Old task replaced by native engine task
+PASS Recognized obsolete runtime retired
+PASS Legacy recovery files retained
+PASS Migrated installation uninstalls
+PASS Migration task cleaned up
+PASS Modified V1 source refused recognition
+PASS Modified V1 installation refused before changes

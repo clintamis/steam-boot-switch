@@ -1,0 +1,11 @@
+{
+    "seconds":  30.006197699999998,
+    "cpuMilliseconds":  125,
+    "logicalProcessors":  16,
+    "oneCorePercent":  0.416580605279422,
+    "machinePercent":  0.026036287829963874,
+    "combinedWorkingSetMB":  53.328125,
+    "state":  "Idle/docked; QA actuation disabled; two native processes; UI closed",
+    "alpha42CpuPercent":  0.03,
+    "alpha42WorkingSetMB":  75.65
+}

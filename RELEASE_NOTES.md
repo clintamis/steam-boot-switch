@@ -1,28 +1,55 @@
-# Steam Boot Switch v1.0.0
+# Steam Boot Switch V1.1.0
 
-**Big Picture Auto-Open & Auto-Close**  
-*Your Windows PC. Console when you want it, desktop when you don't.*
+Intuitive Steam Big Picture: controller-aware startup, optional automatic exit,
+Steam Controller Puck actions and a unified settings window.
 
-Steam Boot Switch lets a Windows living-room gaming PC open Steam Big Picture automatically **only when a controller is connected during Windows sign-in**. Boot without a controller to keep the normal desktop. If enabled, Big Picture can also close automatically after the **last controller disconnects**, once the configurable delay has passed and no game is running. Mouse/keyboard activity can cancel an exit. Steam itself stays running.
+## What's new since V1.0.0
 
-### Before installing
+- Native C# watcher with an isolated Puck worker, rebuilt from complete source.
+- Cached process/state information and reduced stable-dock polling.
+- Optional dock shutdown and three undock modes: disabled, on connection, or
+  immediately after confirmed undocking.
+- Steam game-process protection replaces fullscreen-application assumptions.
+- Tested Preview 2 interface: compact gradient header, dark styling, lime switches
+  and Startup and docking, Big Picture and Steam window sections.
+- All 13 settings preserved, including validation, atomic saves, conflict handling
+  and unknown values.
+- Single graphical Windows installer, one Start Menu application, and Installed
+  Apps uninstaller with settings preserve/export options.
+- Recognized V1.0.0, native development and RC1 upgrades preserve settings.
+- No-activate window hiding and deferred sizing; no experimental FocusGuard.
 
-In **Steam → Settings → Interface**, turn **Run Steam when my computer starts** ON and **Start Steam in Big Picture Mode** OFF. Extract the ZIP; use `Install.vbs` to install or upgrade, `Settings.vbs` to adjust preferences, or `Uninstall.vbs` to remove it.
+## Install or upgrade
 
-### Default behavior
+Download **SteamBootSwitchSetup-1.1.0.exe**, verify its SHA-256 against
+**SHA256SUMS.txt**, close Steam Boot Switch Settings, and run the installer.
+Recognized installations can be upgraded in place. Settings opens after setup;
+monitoring starts without forcing Big Picture open during installation.
 
-- Automatic Big Picture launch only during the Windows startup/sign-in detection window
-- Automatic Big Picture exit enabled, with **5-second** disconnect grace period (minimum configurable value: 1 second)
-- Don't auto-exit when a game is running, another controller remains connected, or state is uncertain
-- Cancel a pending disconnect-triggered exit if mouse/keyboard activity is detected
-- Optionally hide the Steam desktop window after Big Picture exits, without quitting Steam
+In Steam Interface settings, enable **Run Steam when my computer starts** and
+ disable **Start Steam in Big Picture Mode**. Open **Steam Boot Switch** from
+ the Start Menu later to change preferences with **Save and apply**.
+Uninstall through Windows Installed Apps; retain or export settings if wanted.
+Steam, games, Steam startup settings and controller drivers are not modified.
 
-### Tested hardware and limitations
+## Assets
 
-Tested **only on one Windows PC**. Successful tests included a **wired USB-C DualSense Edge**, a **Steam Controller through its Valve Puck**, and a **Nintendo Switch 2 controller** used for a restart test (connection method not recorded). **Bluetooth-paired controllers have not been tested; Bluetooth compatibility is unknown.** These successes do not establish universal compatibility.
+- `SteamBootSwitchSetup-1.1.0.exe` — Windows installer.
+- `SteamBootSwitch-1.1.0-source.zip` — complete source, build instructions and tests.
+- `SHA256SUMS.txt` — checksums for the release assets.
+- `QA-REPORT.md` — verification results and test boundaries.
 
-There may still be a momentary Steam-window or console flash, unusually fast disconnect/reconnect events can be missed, and firmware updates may look like intentional disconnections. See the README for safety notes and troubleshooting.
+## Verification and known limitations
 
-### Acknowledgement
+RC1 passed automated QA and owner-reported local Windows acceptance testing.
+V1.1.0 was rebuilt with final metadata and rechecked; the attached QA report
+records exact results. No additional cross-PC/controller matrix is claimed.
+Idle resource measurements do not establish disconnect-time latency.
 
-This is the author's **first vibe-coded software project**, made with AI assistance and tested on the personal Windows home-entertainment PC it was created for. It is not affiliated with Valve or Steam. Source code is included under the MIT license. The launcher is compiled locally during installation and is **not code-signed**.
+- Steam may occasionally take foreground focus when Big Picture closes.
+- The installer is unsigned; Windows may show an unknown-publisher/SmartScreen warning.
+- Cross-PC hardware compatibility testing is incomplete; Bluetooth is unverified.
+
+Requires Windows 10/11, .NET Framework 4.8, Windows PowerShell 5.1 and Steam.
+MIT licensed, copyright 2026 Steam Boot Switch contributors. Independent of
+Valve and Microsoft. Built with AI assistance and tested on the author's PC.
